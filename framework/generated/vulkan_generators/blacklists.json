@@ -21,7 +21,8 @@
     "vkCreateRayTracingPipelinesKHR"
   ],
   "functions-decoder": [
-    "vkDeferredOperationJoinKHR"
+    "vkDeferredOperationJoinKHR",
+    "vkCreateSemaphore"
   ],
   "structures": [
     "VkBaseOutStructure",

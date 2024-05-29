@@ -158,10 +158,9 @@ static uint32_t GetHardwareBufferFormatBpp(uint32_t format)
 
 VulkanReplayConsumerBase::VulkanReplayConsumerBase(std::shared_ptr<application::Application> application,
                                                    const VulkanReplayOptions&                options) :
-    loader_handle_(nullptr),
-    get_instance_proc_addr_(nullptr), create_instance_proc_(nullptr), application_(application), options_(options),
-    loading_trim_state_(false), replaying_trimmed_capture_(false), have_imported_semaphores_(false), fps_info_(nullptr),
-    omitted_pipeline_cache_data_(false)
+    loader_handle_(nullptr), get_instance_proc_addr_(nullptr), create_instance_proc_(nullptr),
+    application_(application), options_(options), loading_trim_state_(false), replaying_trimmed_capture_(false),
+    have_imported_semaphores_(false), fps_info_(nullptr), omitted_pipeline_cache_data_(false)
 {
     assert(application_ != nullptr);
     assert(options.create_resource_allocator != nullptr);
@@ -2718,6 +2717,10 @@ VulkanReplayConsumerBase::OverrideCreateDevice(VkResult            original_resu
         device_util.RestoreModifiedPhysicalDeviceFeatures();
     }
 
+    // Create semaphore state tracking maps
+    semaphore_track_timeline_values_ = std::map<VkSemaphore, uint32_t>();
+    semaphore_track_bool_values_     = std::map<VkSemaphore, bool>();
+
     return result;
 }
 
@@ -4038,9 +4041,9 @@ VkResult VulkanReplayConsumerBase::OverrideAllocateMemory(
 
             VkMemoryAllocateInfo                     modified_allocate_info = (*replay_allocate_info);
             VkMemoryOpaqueCaptureAddressAllocateInfo address_info           = {
-                          VK_STRUCTURE_TYPE_MEMORY_OPAQUE_CAPTURE_ADDRESS_ALLOCATE_INFO,
-                          modified_allocate_info.pNext,
-                          opaque_address
+                VK_STRUCTURE_TYPE_MEMORY_OPAQUE_CAPTURE_ADDRESS_ALLOCATE_INFO,
+                modified_allocate_info.pNext,
+                opaque_address
             };
             modified_allocate_info.pNext = &address_info;
 
@@ -7291,6 +7294,21 @@ VkResult VulkanReplayConsumerBase::OverrideCreateFramebuffer(
     return result;
 }
 
+VkResult
+VulkanReplayConsumerBase::OverrideCreateSemaphore(PFN_vkCreateSemaphore                                func,
+                                                  VkResult                                             original_result,
+                                                  const DeviceInfo*                                    device_info,
+                                                  StructPointerDecoder<Decoded_VkSemaphoreCreateInfo>* pCreateInfo,
+                                                  StructPointerDecoder<Decoded_VkAllocationCallbacks>* pAllocator,
+                                                  HandlePointerDecoder<VkSemaphore>*                   pSemaphore)
+{
+    VkResult res = func(device_info->handle, pCreateInfo->GetPointer(), pAllocator->GetPointer(), pSemaphore->GetHandlePointer());
+    if (res == VK_SUCCESS && res == original_result) {
+        
+    }
+    return res;
+}
+
 // We want to allow skipping the query for tool properties because the capture layer actually adds this extension
 // and the application may end up using the query.  However, this extension may not be present for replay, so
 // we stub it out in that case.  This will generate warnings in the GfxReconstruct output, but it shouldn't result
@@ -7574,6 +7592,27 @@ void VulkanReplayConsumerBase::GetShadowSemaphores(
         }
     }
 }
+
+// void VulkanReplayConsumer::Process_vkCreateSemaphore(
+//     const ApiCallInfo&                          call_info,
+//     VkResult                                    returnValue,
+//     format::HandleId                            device,
+//     StructPointerDecoder<Decoded_VkSemaphoreCreateInfo>* pCreateInfo,
+//     StructPointerDecoder<Decoded_VkAllocationCallbacks>* pAllocator,
+//     HandlePointerDecoder<VkSemaphore>*          pSemaphore)
+// {
+//     VkDevice in_device = MapHandle<DeviceInfo>(device, &VulkanObjectInfoTable::GetDeviceInfo);
+//     const VkSemaphoreCreateInfo* in_pCreateInfo = pCreateInfo->GetPointer();
+//     const VkAllocationCallbacks* in_pAllocator = GetAllocationCallbacks(pAllocator);
+//     if (!pSemaphore->IsNull()) { pSemaphore->SetHandleLength(1); }
+//     VkSemaphore* out_pSemaphore = pSemaphore->GetHandlePointer();
+
+//     VkResult replay_result = GetDeviceTable(in_device)->CreateSemaphore(in_device, in_pCreateInfo, in_pAllocator,
+//     out_pSemaphore); CheckResult("vkCreateSemaphore", returnValue, replay_result, call_info);
+
+//     AddHandle<SemaphoreInfo>(device, pSemaphore->GetPointer(), out_pSemaphore,
+//     &VulkanObjectInfoTable::AddSemaphoreInfo);
+// }
 
 void VulkanReplayConsumerBase::TrackSemaphoreForwardProgress(const HandlePointerDecoder<VkSemaphore>& semaphore_data,
                                                              std::vector<const SemaphoreInfo*>* removed_semaphores)

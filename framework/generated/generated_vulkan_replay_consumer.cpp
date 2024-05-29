@@ -561,16 +561,15 @@ void VulkanReplayConsumer::Process_vkCreateSemaphore(
     StructPointerDecoder<Decoded_VkAllocationCallbacks>* pAllocator,
     HandlePointerDecoder<VkSemaphore>*          pSemaphore)
 {
-    VkDevice in_device = MapHandle<DeviceInfo>(device, &VulkanObjectInfoTable::GetDeviceInfo);
-    const VkSemaphoreCreateInfo* in_pCreateInfo = pCreateInfo->GetPointer();
-    const VkAllocationCallbacks* in_pAllocator = GetAllocationCallbacks(pAllocator);
+    auto in_device = GetObjectInfoTable().GetDeviceInfo(device);
     if (!pSemaphore->IsNull()) { pSemaphore->SetHandleLength(1); }
-    VkSemaphore* out_pSemaphore = pSemaphore->GetHandlePointer();
+    SemaphoreInfo handle_info;
+    pSemaphore->SetConsumerData(0, &handle_info);
 
-    VkResult replay_result = GetDeviceTable(in_device)->CreateSemaphore(in_device, in_pCreateInfo, in_pAllocator, out_pSemaphore);
+    VkResult replay_result = OverrideCreateSemaphore(GetDeviceTable(in_device->handle)->CreateSemaphore, returnValue, in_device, pCreateInfo, pAllocator, pSemaphore);
     CheckResult("vkCreateSemaphore", returnValue, replay_result, call_info);
 
-    AddHandle<SemaphoreInfo>(device, pSemaphore->GetPointer(), out_pSemaphore, &VulkanObjectInfoTable::AddSemaphoreInfo);
+    AddHandle<SemaphoreInfo>(device, pSemaphore->GetPointer(), pSemaphore->GetHandlePointer(), std::move(handle_info), &VulkanObjectInfoTable::AddSemaphoreInfo);
 }
 
 void VulkanReplayConsumer::Process_vkDestroySemaphore(
