@@ -279,5 +279,19 @@ void VulkanReplayFrameLoopConsumer::ProcessCreateHardwareBufferCommand(
         device_id, memory_id, buffer_id, format, width, height, stride, usage, layers, plane_info);
 }
 
+void VulkanReplayFrameLoopConsumer::Process_vkUnmapMemory(
+    const ApiCallInfo&                          call_info,
+    format::HandleId                            device,
+    format::HandleId                            memory)
+{
+    if (frame_loop_info_.IsLooping())
+    {
+        // Don't unmap any memory while looping
+        return;
+    }
+
+    VulkanReplayConsumer::Process_vkUnmapMemory(call_info, device, memory);
+}
+
 GFXRECON_END_NAMESPACE(decode)
 GFXRECON_END_NAMESPACE(gfxrecon)

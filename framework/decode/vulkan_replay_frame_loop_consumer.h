@@ -141,6 +141,10 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
                                             uint32_t                                            layers,
                                             const std::vector<format::HardwareBufferPlaneInfo>& plane_info) override;
 
+    void Process_vkUnmapMemory(const ApiCallInfo&                          call_info,
+                               format::HandleId                            device,
+                               format::HandleId                            memory) override;
+
   private:
     graphics::FrameLoopInfo& frame_loop_info_;
 };
