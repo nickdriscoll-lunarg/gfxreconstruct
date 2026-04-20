@@ -154,13 +154,39 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
                                           StructPointerDecoder<Decoded_VkDescriptorSetAllocateInfo>* pAllocateInfo,
                                           HandlePointerDecoder<VkDescriptorSet>* pDescriptorSets) override;
 
+    void Process_vkWaitForFences(const ApiCallInfo&             call_info,
+                                 VkResult                       returnValue,
+                                 format::HandleId               device,
+                                 uint32_t                       fenceCount,
+                                 HandlePointerDecoder<VkFence>* pFences,
+                                 VkBool32                       waitAll,
+                                 uint64_t                       timeout) override;
+
+    void Process_vkQueueSubmit(const ApiCallInfo&                          call_info,
+                               VkResult                                    returnValue,
+                               format::HandleId                            queue,
+                               uint32_t                                    submitCount,
+                               StructPointerDecoder<Decoded_VkSubmitInfo>* pSubmits,
+                               format::HandleId                            fence) override;
+
     void Process_vkQueuePresentKHR(const ApiCallInfo&                              call_info,
                                    VkResult                                        returnValue,
                                    format::HandleId                                queue,
                                    StructPointerDecoder<Decoded_VkPresentInfoKHR>* pPresentInfo) override;
 
+    // Private declarations
   private:
-    graphics::FrameLoopInfo&             frame_loop_info_;
+    struct FenceTracking
+    {
+        std::unordered_map<format::HandleId, uint32_t> signaled_fences_;
+        std::unordered_map<format::HandleId, uint32_t> waited_upon_fences_;
+    };
+    void FixupDeviceFences(format::HandleId device, format::HandleId queue);
+
+    // Private data
+  private:
+    graphics::FrameLoopInfo&                            frame_loop_info_;
+    std::unordered_map<format::HandleId, FenceTracking> per_device_fence_tracking_;
 };
 
 GFXRECON_END_NAMESPACE(decode)
