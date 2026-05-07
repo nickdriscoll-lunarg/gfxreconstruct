@@ -161,7 +161,6 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
 
   private:
     graphics::FrameLoopInfo&             frame_loop_info_;
-    std::unordered_set<VkDescriptorPool> active_descriptor_pools_;
 };
 
 GFXRECON_END_NAMESPACE(decode)
