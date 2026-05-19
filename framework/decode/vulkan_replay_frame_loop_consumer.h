@@ -194,9 +194,9 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
     graphics::FrameLoopInfo&                            frame_loop_info_;
     std::unordered_map<format::HandleId, FenceTracking> per_device_fence_tracking_;
   
-    std::unordered_set<VkCommandBuffer>                begun_command_buffers_;
-    std::unordered_set<VkCommandBuffer>                submitted_command_buffers_;
-    std::vector<VkCommandBuffer>                       unbegun_command_buffers_;
+    std::unordered_set<format::HandleId>                begun_command_buffers_;
+    std::unordered_set<format::HandleId>                submitted_command_buffers_;
+    std::vector<format::HandleId>                       unbegun_command_buffers_;
 };
 
 GFXRECON_END_NAMESPACE(decode)

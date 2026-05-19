@@ -424,15 +424,14 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit(const ApiCallInfo&    
                                t.signaled_fences_[fence]);
         }
 
-        // Collect command buffers submitted during command recording
+        // Collect command buffers submitted during the looping frame
         for (int submit_idx = 0; submit_idx < submitCount; ++submit_idx)
         {
-            const VkSubmitInfo& submit = pSubmits->GetPointer()[submit_idx];
-            GFXRECON_LOG_INFO("pCommandBuffers == 0x%" PRIx64, submit.pCommandBuffers);
-            for (int i = 0; i < submit.commandBufferCount; ++i)
+            Decoded_VkSubmitInfo meta_ptr = pSubmits->GetMetaStructPointer()[submit_idx];
+            const format::HandleId* cbs = meta_ptr.pCommandBuffers.GetPointer();
+            for (int i = 0; i < meta_ptr.pCommandBuffers.GetLength(); ++i)
             {
-                GFXRECON_LOG_INFO("Got to %i", i);
-                submitted_command_buffers_.insert(submit.pCommandBuffers[i]);
+                submitted_command_buffers_.insert(cbs[i]);
             }
         }
     }
