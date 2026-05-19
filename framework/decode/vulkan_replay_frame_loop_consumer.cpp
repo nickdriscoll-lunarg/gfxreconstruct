@@ -316,6 +316,26 @@ void VulkanReplayFrameLoopConsumer::Process_vkCreateCommandPool(
         call_info, returnValue, device, pCreateInfo, pAllocator, pCommandPool);
 }
 
+void VulkanReplayFrameLoopConsumer::Process_vkBeginCommandBuffer(
+    const ApiCallInfo&                                      call_info,
+    VkResult                                                returnValue,
+    format::HandleId                                        commandBuffer,
+    StructPointerDecoder<Decoded_VkCommandBufferBeginInfo>* pBeginInfo)
+{
+    // if (!frame_loop_info_.IsRepetition())
+    // {
+    //     VkCommandBuffer cb = GetObjectInfoTable().GetVkCommandBufferInfo(commandBuffer)->handle;
+    //     begun_command_buffers_.insert(cb);
+    // }
+
+    VulkanReplayConsumer::Process_vkBeginCommandBuffer(
+        call_info,
+        returnValue,
+        commandBuffer,
+        pBeginInfo
+    );
+}
+
 void VulkanReplayFrameLoopConsumer::Process_vkAllocateDescriptorSets(
     const ApiCallInfo&                                         call_info,
     VkResult                                                   returnValue,
@@ -341,7 +361,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkWaitForFences(const ApiCallInfo&  
                                                             VkBool32                       waitAll,
                                                             uint64_t                       timeout)
 {
-    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
+    if (!frame_loop_info_.IsRepetition())
     {
         for (int i = 0; i < fenceCount; ++i)
         {
@@ -377,7 +397,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit(const ApiCallInfo&    
                                                           StructPointerDecoder<Decoded_VkSubmitInfo>* pSubmits,
                                                           format::HandleId                            fence)
 {
-    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
+    if (!frame_loop_info_.IsRepetition())
     {
         // Collect fences submitted during the looping frame
         VulkanFenceInfo* fence_info = GetObjectInfoTable().GetVkFenceInfo(fence);
@@ -402,6 +422,18 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit(const ApiCallInfo&    
             GFXRECON_LOG_DEBUG("VkFence with handle \"%" PRIu64 "\" has been signaled %" PRIu32 " times.",
                                fence,
                                t.signaled_fences_[fence]);
+        }
+
+        // Collect command buffers submitted during command recording
+        for (int submit_idx = 0; submit_idx < submitCount; ++submit_idx)
+        {
+            const VkSubmitInfo& submit = pSubmits->GetPointer()[submit_idx];
+            GFXRECON_LOG_INFO("pCommandBuffers == 0x%" PRIx64, submit.pCommandBuffers);
+            for (int i = 0; i < submit.commandBufferCount; ++i)
+            {
+                GFXRECON_LOG_INFO("Got to %i", i);
+                submitted_command_buffers_.insert(submit.pCommandBuffers[i]);
+            }
         }
     }
 
@@ -503,6 +535,23 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
     StructPointerDecoder<Decoded_VkPresentInfoKHR>* pPresentInfo)
 {
     VulkanReplayConsumer::Process_vkQueuePresentKHR(call_info, returnValue, queue, pPresentInfo);
+
+    // if (!frame_loop_info_.IsRepetition())
+    // {
+    //     // Determine final list of command buffers that need synthetic vkBeginCommandBuffer()
+    //     std::set_difference(
+    //         submitted_command_buffers_.begin(),
+    //         submitted_command_buffers_.end(),
+    //         begun_command_buffers_.begin(),
+    //         begun_command_buffers_.end(),
+    //         unbegun_command_buffers_.begin()
+    //     );
+
+    //     for (VkCommandBuffer cb : unbegun_command_buffers_)
+    //     {
+    //         GFXRECON_LOG_INFO("submitted cb handle: 0x%" PRIx64, cb);
+    //     }
+    // }
 
     if (frame_loop_info_.IsLooping())
     {

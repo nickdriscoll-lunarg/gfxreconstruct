@@ -148,6 +148,12 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
                                      StructPointerDecoder<Decoded_VkAllocationCallbacks>*   pAllocator,
                                      HandlePointerDecoder<VkCommandPool>*                   pCommandPool) override;
 
+    
+    void Process_vkBeginCommandBuffer(const ApiCallInfo&                          call_info,
+                                      VkResult                                    returnValue,
+                                      format::HandleId                            commandBuffer,
+                                      StructPointerDecoder<Decoded_VkCommandBufferBeginInfo>* pBeginInfo) override;
+
     void Process_vkAllocateDescriptorSets(const ApiCallInfo&                                         call_info,
                                           VkResult                                                   returnValue,
                                           format::HandleId                                           device,
@@ -187,6 +193,10 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
   private:
     graphics::FrameLoopInfo&                            frame_loop_info_;
     std::unordered_map<format::HandleId, FenceTracking> per_device_fence_tracking_;
+  
+    std::unordered_set<VkCommandBuffer>                begun_command_buffers_;
+    std::unordered_set<VkCommandBuffer>                submitted_command_buffers_;
+    std::vector<VkCommandBuffer>                       unbegun_command_buffers_;
 };
 
 GFXRECON_END_NAMESPACE(decode)
