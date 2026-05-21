@@ -22,6 +22,7 @@
 
 #include "decode/vulkan_replay_frame_loop_consumer.h"
 
+#include "generated/generated_vulkan_struct_handle_mappers.h"
 #include "generated/generated_vulkan_replay_consumer.h"
 
 GFXRECON_BEGIN_NAMESPACE(gfxrecon)
@@ -322,11 +323,11 @@ void VulkanReplayFrameLoopConsumer::Process_vkBeginCommandBuffer(
     format::HandleId                                        commandBuffer,
     StructPointerDecoder<Decoded_VkCommandBufferBeginInfo>* pBeginInfo)
 {
-    // if (!frame_loop_info_.IsRepetition())
-    // {
-    //     VkCommandBuffer cb = GetObjectInfoTable().GetVkCommandBufferInfo(commandBuffer)->handle;
-    //     begun_command_buffers_.insert(cb);
-    // }
+    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
+    {
+        //VkCommandBuffer cb = GetObjectInfoTable().GetVkCommandBufferInfo(commandBuffer)->handle;
+        begun_command_buffers_.insert(commandBuffer);
+    }
 
     VulkanReplayConsumer::Process_vkBeginCommandBuffer(
         call_info,
@@ -361,7 +362,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkWaitForFences(const ApiCallInfo&  
                                                             VkBool32                       waitAll,
                                                             uint64_t                       timeout)
 {
-    if (!frame_loop_info_.IsRepetition())
+    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
     {
         for (int i = 0; i < fenceCount; ++i)
         {
@@ -397,7 +398,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit(const ApiCallInfo&    
                                                           StructPointerDecoder<Decoded_VkSubmitInfo>* pSubmits,
                                                           format::HandleId                            fence)
 {
-    if (!frame_loop_info_.IsRepetition())
+    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
     {
         // Collect fences submitted during the looping frame
         VulkanFenceInfo* fence_info = GetObjectInfoTable().GetVkFenceInfo(fence);
@@ -425,6 +426,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit(const ApiCallInfo&    
         }
 
         // Collect command buffers submitted during the looping frame
+        MapStructArrayHandles(pSubmits->GetMetaStructPointer(), pSubmits->GetLength(), GetObjectInfoTable());
         for (int submit_idx = 0; submit_idx < submitCount; ++submit_idx)
         {
             Decoded_VkSubmitInfo meta_ptr = pSubmits->GetMetaStructPointer()[submit_idx];
@@ -437,6 +439,40 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit(const ApiCallInfo&    
     }
 
     VulkanReplayConsumer::Process_vkQueueSubmit(call_info, returnValue, queue, submitCount, pSubmits, fence);
+}
+
+void VulkanReplayFrameLoopConsumer::Process_vkQueueSubmit2(const ApiCallInfo&                           call_info,
+                                                           VkResult                                     returnValue,
+                                                           format::HandleId                             queue,
+                                                           uint32_t                                     submitCount,
+                                                           StructPointerDecoder<Decoded_VkSubmitInfo2>* pSubmits,
+                                                           format::HandleId                             fence)
+{
+    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
+    {
+        
+        // Collect command buffers submitted during the looping frame
+        MapStructArrayHandles(pSubmits->GetMetaStructPointer(), pSubmits->GetLength(), GetObjectInfoTable());
+        for (int submit_idx = 0; submit_idx < submitCount; ++submit_idx)
+        {
+            Decoded_VkSubmitInfo2 meta_ptr = pSubmits->GetMetaStructPointer()[submit_idx];
+            MapStructArrayHandles(meta_ptr.pCommandBufferInfos->GetMetaStructPointer(), meta_ptr.pCommandBufferInfos->GetLength(), GetObjectInfoTable());
+            for (int i = 0; i < meta_ptr.pCommandBufferInfos->GetLength(); ++i)
+            {
+                Decoded_VkCommandBufferSubmitInfo cbinfo = meta_ptr.pCommandBufferInfos->GetMetaStructPointer()[i];
+                submitted_command_buffers_.insert(cbinfo.commandBuffer);
+            }
+        }
+    }
+
+    VulkanReplayConsumer::Process_vkQueueSubmit2(
+        call_info,
+        returnValue,
+        queue,
+        submitCount,
+        pSubmits,
+        fence
+    );
 }
 
 void VulkanReplayFrameLoopConsumer::FixupDeviceFences(format::HandleId device, format::HandleId queue)
@@ -535,33 +571,62 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
 {
     VulkanReplayConsumer::Process_vkQueuePresentKHR(call_info, returnValue, queue, pPresentInfo);
 
-    // if (!frame_loop_info_.IsRepetition())
-    // {
-    //     // Determine final list of command buffers that need synthetic vkBeginCommandBuffer()
-    //     std::set_difference(
-    //         submitted_command_buffers_.begin(),
-    //         submitted_command_buffers_.end(),
-    //         begun_command_buffers_.begin(),
-    //         begun_command_buffers_.end(),
-    //         unbegun_command_buffers_.begin()
-    //     );
+    // Get device
+    CommonObjectInfoTable& table      = GetObjectInfoTable();
+    VulkanQueueInfo*       queue_info = table.GetVkQueueInfo(queue);
+    VkDevice               device     = queue_info->parent;
+    GFXRECON_ASSERT(device);
+    const graphics::VulkanDeviceTable* device_table = GetDeviceTable(device);
+    GFXRECON_ASSERT(device_table);
 
-    //     for (VkCommandBuffer cb : unbegun_command_buffers_)
-    //     {
-    //         GFXRECON_LOG_INFO("submitted cb handle: 0x%" PRIx64, cb);
-    //     }
-    // }
+    if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
+    {
+        GFXRECON_LOG_INFO("Computing list of unbegun command buffers...");
+
+        // Determine final list of command buffers that need synthetic vkBeginCommandBuffer()
+        std::vector<format::HandleId> handles;
+        handles.reserve(submitted_command_buffers_.size());
+
+        std::vector<format::HandleId> submitted_cbs;
+        submitted_cbs.resize(submitted_command_buffers_.size());
+        std::copy(submitted_command_buffers_.begin(), submitted_command_buffers_.end(), submitted_cbs.begin());
+        std::vector<format::HandleId> begun_cbs;
+        begun_cbs.resize(begun_command_buffers_.size());
+        std::copy(begun_command_buffers_.begin(), begun_command_buffers_.end(), begun_cbs.begin());
+
+        std::sort(submitted_cbs.begin(), submitted_cbs.end());
+        std::sort(begun_cbs.begin(), begun_cbs.end());
+
+        GFXRECON_LOG_INFO("submitted_command_buffers_:");
+        for (format::HandleId handle : submitted_cbs)
+        {
+            GFXRECON_LOG_INFO("handle %" PRIu64, handle);
+        }
+        GFXRECON_LOG_INFO("begun_command_buffers_:");
+        for (format::HandleId handle : begun_cbs)
+        {
+            GFXRECON_LOG_INFO("handle %" PRIu64, handle);
+        }
+
+        std::set_difference(
+            submitted_cbs.begin(),
+            submitted_cbs.end(),
+            begun_cbs.begin(),
+            begun_cbs.end(),
+            handles.begin()
+        );
+        GFXRECON_LOG_INFO("handle count: %i", handles.size());
+
+        for (format::HandleId handle : handles)
+        {
+            VulkanCommandBufferInfo* cb_info = table.GetVkCommandBufferInfo(handle);
+            GFXRECON_LOG_INFO("unbegun command buffer with replay-time handle 0x%" PRIx64 "...", cb_info->handle);
+            unbegun_command_buffers_.push_back(cb_info->handle);
+        }
+    }
 
     if (frame_loop_info_.IsLooping())
     {
-        // Get device
-        CommonObjectInfoTable& table      = GetObjectInfoTable();
-        VulkanQueueInfo*       queue_info = table.GetVkQueueInfo(queue);
-        VkDevice               device     = queue_info->parent;
-        GFXRECON_ASSERT(device);
-        const graphics::VulkanDeviceTable* device_table = GetDeviceTable(device);
-        GFXRECON_ASSERT(device_table);
-
         VkResult result;
 
         GFXRECON_LOG_DEBUG("Waiting for device to idle...");
@@ -569,6 +634,16 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
         CHECK_VK_RESULT(result, "vkDeviceWaitIdle");
 
         FixupDeviceFences(queue_info->parent_id, queue);
+
+        // Synthetically begin command buffers that need it
+        for (VkCommandBuffer cb : unbegun_command_buffers_)
+        {
+            VkCommandBufferBeginInfo info = {};
+            info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+            GFXRECON_LOG_INFO("Beginning cb with replay-time handle 0x%" PRIx64, cb);
+            device_table->BeginCommandBuffer(cb, &info);
+        }
     }
 }
 

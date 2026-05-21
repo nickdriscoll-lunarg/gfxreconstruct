@@ -175,6 +175,13 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
                                StructPointerDecoder<Decoded_VkSubmitInfo>* pSubmits,
                                format::HandleId                            fence) override;
 
+    void Process_vkQueueSubmit2(const ApiCallInfo&                          call_info,
+                                VkResult                                    returnValue,
+                                format::HandleId                            queue,
+                                uint32_t                                    submitCount,
+                                StructPointerDecoder<Decoded_VkSubmitInfo2>* pSubmits,
+                                format::HandleId                            fence) override;
+
     void Process_vkQueuePresentKHR(const ApiCallInfo&                              call_info,
                                    VkResult                                        returnValue,
                                    format::HandleId                                queue,
@@ -196,7 +203,7 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayConsumer
   
     std::unordered_set<format::HandleId>                begun_command_buffers_;
     std::unordered_set<format::HandleId>                submitted_command_buffers_;
-    std::vector<format::HandleId>                       unbegun_command_buffers_;
+    std::vector<VkCommandBuffer>                        unbegun_command_buffers_;
 };
 
 GFXRECON_END_NAMESPACE(decode)
