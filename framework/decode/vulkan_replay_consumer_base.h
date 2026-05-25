@@ -2029,6 +2029,8 @@ class VulkanReplayConsumerBase : public VulkanConsumer
     std::unordered_map<VkImage, format::HandleId> image_handle_id_map_;
 
   protected:
+    bool GetLoadingTrimmedState() const { return loading_trim_state_; }
+
     // Used by pipeline cache handling, there are the following two cases for the flag to be set:
     //
     //    1. Replay with command line option --opcd or --omit-pipeline-cache-data and some
