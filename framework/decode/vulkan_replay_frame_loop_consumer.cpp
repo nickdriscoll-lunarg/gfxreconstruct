@@ -323,17 +323,15 @@ void VulkanReplayFrameLoopConsumer::Process_vkBeginCommandBuffer(
     format::HandleId                                        commandBuffer,
     StructPointerDecoder<Decoded_VkCommandBufferBeginInfo>* pBeginInfo)
 {
-    if (!GetLoadingTrimmedState())
+    bool should_track_command_buffers = !GetLoadingTrimmedState() && frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition();
+    if (should_track_command_buffers)
     {
-        if (frame_loop_info_.IsLooping() && !frame_loop_info_.IsRepetition())
+        // On first iteration of looping frame, record command buffers that are explicitly begun
+        VkCommandBufferBeginInfo* info = pBeginInfo->GetPointer();
+        if (info->pInheritanceInfo == nullptr)
         {
-            // On first iteration of looping frame, record command buffers that are explicitly begun
-            VkCommandBufferBeginInfo* info = pBeginInfo->GetPointer();
-            if (info->pInheritanceInfo == nullptr)
-            {
-                GFXRECON_LOG_INFO("Just observed vkBeginCommandBuffer(%" PRIu64 ")", commandBuffer);
-                begun_command_buffers_.insert(commandBuffer);
-            }
+            GFXRECON_LOG_INFO("Just observed vkBeginCommandBuffer(%" PRIu64 ")", commandBuffer);
+            begun_command_buffers_.insert(commandBuffer);
         }
     }
 
@@ -594,6 +592,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
 
         // Determine final list of command buffers that need synthetic vkBeginCommandBuffer()
         std::vector<format::HandleId> handles;
+        handles.reserve(submitted_command_buffers_.size());
 
         std::vector<format::HandleId> submitted_cbs;
         submitted_cbs.resize(submitted_command_buffers_.size());
@@ -605,12 +604,12 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
         std::sort(submitted_cbs.begin(), submitted_cbs.end());
         std::sort(begun_cbs.begin(), begun_cbs.end());
 
-        GFXRECON_LOG_INFO("submitted_command_buffers_:");
+        GFXRECON_LOG_INFO("submitted_command_buffers_ (len == %i):", submitted_cbs.size());
         for (format::HandleId handle : submitted_cbs)
         {
             GFXRECON_LOG_INFO("handle %" PRIu64, handle);
         }
-        GFXRECON_LOG_INFO("begun_command_buffers_:");
+        GFXRECON_LOG_INFO("begun_command_buffers_ (len == %i):", begun_cbs.size());
         for (format::HandleId handle : begun_cbs)
         {
             GFXRECON_LOG_INFO("handle %" PRIu64, handle);
@@ -621,7 +620,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
             submitted_cbs.end(),
             begun_cbs.begin(),
             begun_cbs.end(),
-            handles.begin()
+            std::back_inserter(handles)
         );
         GFXRECON_LOG_INFO("handle count: %i", handles.size());
         GFXRECON_LOG_INFO("handles:");
@@ -630,14 +629,12 @@ void VulkanReplayFrameLoopConsumer::Process_vkQueuePresentKHR(
             GFXRECON_LOG_INFO("handle %" PRIu64, handle);
         }
 
+        unbegun_command_buffers_.reserve(handles.size());
         for (format::HandleId handle : handles)
         {
             VulkanCommandBufferInfo* cb_info = table.GetVkCommandBufferInfo(handle);
-            if (cb_info == nullptr)
-            {
-                GFXRECON_LOG_ERROR("THIS SHOULDN'T BE POSSIBLE BRO!");
-            }
-            GFXRECON_LOG_INFO("unbegun command buffer with replay-time handle 0x%" PRIx64 "...", cb_info->handle);
+            GFXRECON_ASSERT(cb_info != nullptr);
+            GFXRECON_LOG_INFO("unbegun command buffer with handle %" PRIu64 "...", handle);
             unbegun_command_buffers_.push_back(cb_info->handle);
         }
     }
