@@ -23,7 +23,7 @@
 
 from khronos_base_generator import write
 
-class KhronosReplayFrameLoopConsumerBaseBodyGenerator():
+class KhronosReplayFrameLoopConsumerBodyGenerator():
     """Base class for generating replay frame loop consumers body code."""
 
     def make_replay_frame_loop_consumer_func_body(self, api_data, return_type, name, values):
@@ -77,7 +77,7 @@ class KhronosReplayFrameLoopConsumerBaseBodyGenerator():
             else:
                 cmddef += self.make_consumer_func_decl(
                     return_type,
-                    '{}ReplayFrameLoopConsumerBase::Process_'.format(platform_type) + cmd,
+                    '{}ReplayFrameLoopConsumer::Process_'.format(platform_type) + cmd,
                     values
                 ) + '\n'
             cmddef += '{\n'

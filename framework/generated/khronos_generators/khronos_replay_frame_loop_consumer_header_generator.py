@@ -24,7 +24,7 @@
 import sys
 from khronos_base_generator import write
 
-class KhronosFrameLoopConsumerBaseHeaderGenerator():
+class KhronosFrameLoopConsumerHeaderGenerator():
     """KhronosFrameLoopConsumerBaseHeaderGenerator
     Generates C++ header for the generated frame loop functions.
     """
@@ -35,7 +35,7 @@ class KhronosFrameLoopConsumerBaseHeaderGenerator():
 
     def write_class_setup(self, class_name, constructor_args):
         write(
-            'class {class_name} : public VulkanReplayConsumer'.format(
+            'class {class_name} : public VulkanReplayFrameLoopConsumerBase'.format(
                 class_name=class_name
             ),
             file=self.outFile
@@ -47,7 +47,7 @@ class KhronosFrameLoopConsumerBaseHeaderGenerator():
                 [arg.split(' ')[-1] for arg in constructor_args.split(',')]
             )
             write(
-                '    {class_name}({}) :\n        VulkanReplayConsumer({})'.format(
+                '    {class_name}({}) :\n        VulkanReplayFrameLoopConsumerBase({})'.format(
                     constructor_args, arg_list, class_name=class_name
                 ),
                 file=self.outFile

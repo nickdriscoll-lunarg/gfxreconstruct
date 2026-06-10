@@ -27,10 +27,10 @@
 **
 */
 
-#ifndef  GFXRECON_GENERATED_VULKAN_REPLAY_FRAME_LOOP_CONSUMER_BASE_H
-#define  GFXRECON_GENERATED_VULKAN_REPLAY_FRAME_LOOP_CONSUMER_BASE_H
+#ifndef  GFXRECON_GENERATED_VULKAN_REPLAY_FRAME_LOOP_CONSUMER_H
+#define  GFXRECON_GENERATED_VULKAN_REPLAY_FRAME_LOOP_CONSUMER_H
 
-#include "decode/vulkan_replay_consumer_base.h"
+#include "decode/vulkan_replay_frame_loop_consumer_base.h"
 #include "util/defines.h"
 
 #include "vulkan/vulkan.h"
@@ -44,15 +44,14 @@
 
 GFXRECON_BEGIN_NAMESPACE(gfxrecon)
 GFXRECON_BEGIN_NAMESPACE(decode)
-class VulkanReplayFrameLoopConsumerBase : public VulkanReplayConsumer
+class VulkanReplayFrameLoopConsumer : public VulkanReplayFrameLoopConsumerBase
 {
   public:
-    VulkanReplayFrameLoopConsumerBase(std::shared_ptr<application::Application> application, const VulkanReplayOptions& options) :
-        VulkanReplayConsumer(application, options)
+    VulkanReplayFrameLoopConsumer(std::shared_ptr<application::Application> application, const VulkanReplayOptions& options, graphics::FrameLoopInfo& frame_loop_info) :
+        VulkanReplayFrameLoopConsumerBase(application, options, frame_loop_info)
     {}
 
-    virtual ~VulkanReplayFrameLoopConsumerBase() override { }
-    virtual graphics::FrameLoopInfo& getFrameLoopInfo() = 0;
+    virtual ~VulkanReplayFrameLoopConsumer() override { }
 
     void Process_vkCreateInstance(
         const ApiCallInfo&                          call_info,
@@ -1108,4 +1107,4 @@ class VulkanReplayFrameLoopConsumerBase : public VulkanReplayConsumer
 GFXRECON_END_NAMESPACE(decode)
 GFXRECON_END_NAMESPACE(gfxrecon)
 
-#endif // GFXRECON_GENERATED_VULKAN_REPLAY_FRAME_LOOP_CONSUMER_BASE_H
+#endif // GFXRECON_GENERATED_VULKAN_REPLAY_FRAME_LOOP_CONSUMER_H

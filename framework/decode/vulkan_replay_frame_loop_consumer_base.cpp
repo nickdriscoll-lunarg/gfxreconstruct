@@ -23,13 +23,27 @@
 #include "decode/custom_vulkan_struct_handle_mappers.h"
 
 #include "generated/generated_vulkan_replay_consumer.h"
-#include "generated/generated_vulkan_replay_frame_loop_consumer_base.h"
-#include "decode/vulkan_replay_frame_loop_consumer.h"
+//#include "generated/generated_vulkan_replay_frame_loop_consumer_base.h"
+#include "decode/vulkan_replay_frame_loop_consumer_base.h"
 
 GFXRECON_BEGIN_NAMESPACE(gfxrecon)
 GFXRECON_BEGIN_NAMESPACE(decode)
 
-void VulkanReplayFrameLoopConsumer::Process_vkCreateCommandPool(
+#define CHECK_VK_RESULT(_res_, _func_)                                        \
+    {                                                                         \
+        VkResult _RES = (_res_);                                              \
+        if (_RES != VK_SUCCESS)                                               \
+        {                                                                     \
+            GFXRECON_LOG_ERROR("[%s:%u] synthetic call to %s failed with %s", \
+                               __FILE__,                                      \
+                               __LINE__,                                      \
+                               _func_,                                        \
+                               util::ToString(_RES).c_str());                 \
+            std::exit(-1);                                                    \
+        }                                                                     \
+    }
+
+void VulkanReplayFrameLoopConsumerBase::Process_vkCreateCommandPool(
     const ApiCallInfo&                                     call_info,
     VkResult                                               returnValue,
     format::HandleId                                       device,
@@ -52,7 +66,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkCreateCommandPool(
         call_info, returnValue, device, pCreateInfo, pAllocator, pCommandPool);
 }
 
-void VulkanReplayFrameLoopConsumer::Process_vkCreateDescriptorPool(
+void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDescriptorPool(
     const ApiCallInfo&                                        call_info,
     VkResult                                                  returnValue,
     format::HandleId                                          device,
@@ -83,7 +97,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkCreateDescriptorPool(
     }
 }
 
-void VulkanReplayFrameLoopConsumer::Process_vkDestroyDescriptorPool(
+void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorPool(
     const ApiCallInfo&                                   call_info,
     format::HandleId                                     device,
     format::HandleId                                     descriptorPool,
@@ -118,7 +132,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkDestroyDescriptorPool(
     VulkanReplayConsumer::Process_vkDestroyDescriptorPool(call_info, device, descriptorPool, pAllocator);
 }
 
-void VulkanReplayFrameLoopConsumer::RemovePoolDanglingCreateDescriptors(format::HandleId descriptorPool)
+void VulkanReplayFrameLoopConsumerBase::RemovePoolDanglingCreateDescriptors(format::HandleId descriptorPool)
 {
     std::vector<format::HandleId> handles_to_delete;
     handles_to_delete.reserve(dangling_create_descriptor_sets_.size());
@@ -136,7 +150,7 @@ void VulkanReplayFrameLoopConsumer::RemovePoolDanglingCreateDescriptors(format::
     }
 }
 
-void VulkanReplayFrameLoopConsumer::Process_vkResetDescriptorPool(const ApiCallInfo&         call_info,
+void VulkanReplayFrameLoopConsumerBase::Process_vkResetDescriptorPool(const ApiCallInfo&         call_info,
                                                                   VkResult                   returnValue,
                                                                   format::HandleId           device,
                                                                   format::HandleId           descriptorPool,
@@ -158,7 +172,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkResetDescriptorPool(const ApiCallI
     VulkanReplayConsumer::Process_vkResetDescriptorPool(call_info, returnValue, device, descriptorPool, flags);
 }
 
-void VulkanReplayFrameLoopConsumer::Process_vkAllocateDescriptorSets(
+void VulkanReplayFrameLoopConsumerBase::Process_vkAllocateDescriptorSets(
     const ApiCallInfo&                                         call_info,
     VkResult                                                   returnValue,
     format::HandleId                                           device,
@@ -191,7 +205,7 @@ void VulkanReplayFrameLoopConsumer::Process_vkAllocateDescriptorSets(
     }
 }
 
-void VulkanReplayFrameLoopConsumer::Process_vkFreeDescriptorSets(const ApiCallInfo& call_info,
+void VulkanReplayFrameLoopConsumerBase::Process_vkFreeDescriptorSets(const ApiCallInfo& call_info,
                                                                  VkResult           returnValue,
                                                                  format::HandleId   device,
                                                                  format::HandleId   descriptorPool,

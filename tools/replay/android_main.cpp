@@ -27,7 +27,6 @@
 #include "application/android_window.h"
 #include "decode/file_processor.h"
 #include "decode/preload_file_processor.h"
-#include "decode/vulkan_replay_frame_loop_consumer.h"
 #include "decode/vulkan_replay_options.h"
 #include "decode/vulkan_tracked_object_info_table.h"
 #include "decode/vulkan_pre_process_consumer.h"
@@ -46,6 +45,7 @@
 #endif
 #include "generated/generated_vulkan_decoder.h"
 #include "generated/generated_vulkan_replay_consumer.h"
+#include "generated/generated_vulkan_replay_frame_loop_consumer.h"
 #include "util/android/activity.h"
 #include "util/android/intent.h"
 #include "util/argument_parser.h"

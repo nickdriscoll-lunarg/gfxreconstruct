@@ -1,7 +1,8 @@
 #!/usr/bin/python3 -i
 #
-# Copyright (c) 2018 Valve Corporation
-# Copyright (c) 2018-2024 LunarG, Inc.
+# Copyright (c) 2018-2020 Valve Corporation
+# Copyright (c) 2018-2023 LunarG, Inc.
+# Copyright (c) 2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
@@ -21,29 +22,25 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+import json
 import sys
 from vulkan_base_generator import VulkanBaseGenerator, VulkanBaseGeneratorOptions, write
-from khronos_replay_frame_loop_consumer_base_header_generator import KhronosFrameLoopConsumerBaseHeaderGenerator
+from khronos_replay_frame_loop_consumer_body_generator import KhronosReplayFrameLoopConsumerBodyGenerator
 
-class VulkanFrameLoopConsumerBaseHeaderGeneratorOptions(VulkanBaseGeneratorOptions):
-    """
-    Class for generating C++ member declarations for the VulkanFrameLoopConsumerBase class
-    """
+class VulkanReplayFrameLoopConsumerBodyGeneratorOptions(VulkanBaseGeneratorOptions):
+    """Options for generating a C++ class for Vulkan capture file replay."""
 
     def __init__(
         self,
-        class_name,
-        base_class_header,
-        constructor_args='',
-        blacklists=None,      # Path to JSON file listing apicalls and structs to ignore.
-        platform_types=None,  # Path to JSON file listing platform (WIN32, X11, etc.) defined types.
+        replay_frame_loop_overrides=None, # Path to JSON file listing Vulkan API calls to generate.
+        blacklists=None,                  # Path to JSON file listing apicalls and structs to ignore
+        platform_types=None,              # Path to JSON file listing platform (WIN32, X11, etc.) defined types.
         filename=None,
         directory='.',
         prefix_text='',
         protect_file=False,
         protect_feature=True,
-        extra_headers=[],
-        replay_frame_loop_overrides=None
+        extra_headers=[]
     ):
         VulkanBaseGeneratorOptions.__init__(
             self,
@@ -54,26 +51,22 @@ class VulkanFrameLoopConsumerBaseHeaderGeneratorOptions(VulkanBaseGeneratorOptio
             prefix_text,
             protect_file,
             protect_feature,
-            extra_headers=extra_headers,
-            replay_frame_loop_overrides=replay_frame_loop_overrides
+            replay_frame_loop_overrides=replay_frame_loop_overrides,
+            extra_headers=extra_headers
         )
-        self.class_name = class_name
-        self.base_class_header = base_class_header
-        self.constructor_args = constructor_args
-        self.replay_frame_loop_overrides = replay_frame_loop_overrides
 
         self.begin_end_file_data.specific_headers.extend((
-            'decode/{}'.format(self.base_class_header),
-            'util/defines.h',
+            'generated/generated_vulkan_replay_frame_loop_consumer.h',
         ))
-
         self.begin_end_file_data.namespaces.extend(('gfxrecon', 'decode'))
+        self.begin_end_file_data.common_api_headers = []
 
-
-class VulkanFrameLoopConsumerBaseHeaderGenerator(VulkanBaseGenerator, KhronosFrameLoopConsumerBaseHeaderGenerator):
-    """ - subclass of VulkanBaseGenerator.
-    Generates C++ member declarations for the VulkanFrameLoopConsumerBase class
-    Generate C++ class declarations for Vulkan parameter processing.
+class VulkanReplayFrameLoopConsumerBodyGenerator(
+    KhronosReplayFrameLoopConsumerBodyGenerator, VulkanBaseGenerator
+):
+    """VulkanReplayFrameLoopConsumerBaseBodyGenerator
+    Generates C++ member definitions for the VulkanReplayFrameLoopConsumerBase class responsible for
+    replaying Vulkan API while doing frame looping.
     """
 
     def __init__(
@@ -86,11 +79,11 @@ class VulkanFrameLoopConsumerBaseHeaderGenerator(VulkanBaseGenerator, KhronosFra
             diag_file=diag_file
         )
 
-
     def endFile(self):
         """Method override."""
-        KhronosFrameLoopConsumerBaseHeaderGenerator.output_header_contents(
-            self, self.genOpts.class_name, self.genOpts.constructor_args)
+        api_data = self.get_api_data()
+
+        KhronosReplayFrameLoopConsumerBodyGenerator.generate_replay_frame_loop_consumer_content(self, api_data)
 
         self.newline()
 

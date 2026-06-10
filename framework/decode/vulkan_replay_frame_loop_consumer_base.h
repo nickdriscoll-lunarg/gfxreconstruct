@@ -26,22 +26,21 @@
 #include "util/defines.h"
 #include "decode/vulkan_replay_consumer_base.h"
 #include "generated/generated_vulkan_replay_consumer.h"
-#include "generated/generated_vulkan_replay_frame_loop_consumer_base.h"
 
 GFXRECON_BEGIN_NAMESPACE(gfxrecon)
 GFXRECON_BEGIN_NAMESPACE(decode)
 
-class VulkanReplayFrameLoopConsumer : public VulkanReplayFrameLoopConsumerBase
+class VulkanReplayFrameLoopConsumerBase : public VulkanReplayConsumer
 {
   public:
-    VulkanReplayFrameLoopConsumer(std::shared_ptr<application::Application> application,
+    VulkanReplayFrameLoopConsumerBase(std::shared_ptr<application::Application> application,
                                   const VulkanReplayOptions&                options,
                                   graphics::FrameLoopInfo&                  frame_loop_info) :
-        VulkanReplayFrameLoopConsumerBase(application, options),
-        frame_loop_info_(frame_loop_info)
+        frame_loop_info_(frame_loop_info),
+        VulkanReplayConsumer(application, options)
     {}
 
-    graphics::FrameLoopInfo& getFrameLoopInfo() override { return frame_loop_info_; }
+    graphics::FrameLoopInfo& getFrameLoopInfo() { return frame_loop_info_; }
 
     void Process_vkCreateCommandPool(const ApiCallInfo&                                     call_info,
                                      VkResult                                               returnValue,
@@ -81,11 +80,19 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayFrameLoopConsumerBase
                                       uint32_t                               descriptorSetCount,
                                       HandlePointerDecoder<VkDescriptorSet>* pDescriptorSets) override;
 
+    // Private declarations
   private:
     void RemovePoolDanglingCreateDescriptors(format::HandleId descriptorPool);
+    struct FenceTracking
+    {
+        std::unordered_map<format::HandleId, uint32_t> signaled_fences_;
+        std::unordered_map<format::HandleId, uint32_t> waited_upon_fences_;
+    };
+    void FixupDeviceFences(format::HandleId device, format::HandleId queue);
 
+    // Private data
   private:
-    graphics::FrameLoopInfo&             frame_loop_info_;
+    graphics::FrameLoopInfo& frame_loop_info_;
 
     /// A "dangling" resource is one that was either
     /// - created during the loop range but destroyed after it
@@ -94,6 +101,8 @@ class VulkanReplayFrameLoopConsumer : public VulkanReplayFrameLoopConsumerBase
     std::unordered_set<format::HandleId> dangling_create_descriptor_sets_;
     std::unordered_set<format::HandleId> dangling_destroy_descriptor_pools_;
     std::unordered_set<format::HandleId> dangling_destroy_descriptor_sets_;
+
+    std::unordered_map<format::HandleId, FenceTracking> per_device_fence_tracking_;
 };
 
 GFXRECON_END_NAMESPACE(decode)

@@ -214,8 +214,8 @@ target_sources(gfxrecon_decode
                     ${CMAKE_CURRENT_LIST_DIR}/vulkan_frame_warm_up.cpp
                     ${CMAKE_CURRENT_LIST_DIR}/vulkan_json_consumer_base.h
                     ${CMAKE_CURRENT_LIST_DIR}/vulkan_json_consumer_base.cpp
-                    ${CMAKE_CURRENT_LIST_DIR}/vulkan_replay_frame_loop_consumer.h
-                    ${CMAKE_CURRENT_LIST_DIR}/vulkan_replay_frame_loop_consumer.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/vulkan_replay_frame_loop_consumer_base.h
+                    ${CMAKE_CURRENT_LIST_DIR}/vulkan_replay_frame_loop_consumer_base.cpp
                     ${CMAKE_CURRENT_LIST_DIR}/marker_json_consumer.h
                     ${CMAKE_CURRENT_LIST_DIR}/metadata_json_consumer.h
                     ${CMAKE_CURRENT_LIST_DIR}/vulkan_enum_util.h
@@ -314,8 +314,8 @@ target_sources(gfxrecon_decode
                     ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_referenced_block_consumer.cpp
                     ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_consumer.h
                     ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_consumer.cpp
-                    ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_frame_loop_consumer_base.h
-                    ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_frame_loop_consumer_base.cpp
+                    ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_frame_loop_consumer.h
+                    ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_frame_loop_consumer.cpp
                     ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_dump_resources.h
                     ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_replay_dump_resources.cpp
                     ${PROJECT_SOURCE_DIR}/framework/generated/generated_vulkan_struct_decoders_forward.h
