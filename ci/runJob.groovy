@@ -87,6 +87,12 @@ def gfxrTestWindows(
                         allowEmptyArchive: false,
                         onlyIfSuccessful: false,
                     )
+                    junit(
+                        testResults: 'vulkantest-results/**/*.xml',
+                        allowEmptyResults: true,
+                        keepLongStdio: true,
+                        skipPublishingChecks: true
+                    )
                 } finally {
                     retry(3) {
                         try {
@@ -165,6 +171,12 @@ def gfxrTestLinux(
                         allowEmptyArchive: false,
                         onlyIfSuccessful: false,
                     )
+                    junit(
+                        testResults: 'vulkantest-results/**/*.xml',
+                        allowEmptyResults: true,
+                        keepLongStdio: true,
+                        skipPublishingChecks: true
+                    )
                 } finally {
                     retry(3) {
                         try {
@@ -242,6 +254,12 @@ def gfxrTestAndroid(
                         excludes: '**/*.gfxr,**/core,**/core.*,**/*.jsonl,**/*.gfxa',
                         allowEmptyArchive: false,
                         onlyIfSuccessful: false,
+                    )
+                    junit(
+                        testResults: 'vulkantest-results/**/*.xml',
+                        allowEmptyResults: true,
+                        keepLongStdio: true,
+                        skipPublishingChecks: true
                     )
                 } finally {
                     retry(3) {
@@ -339,6 +357,12 @@ def gfxrTestWindowsManual(
                         allowEmptyArchive: true,
                         onlyIfSuccessful: false
                     )
+                    junit(
+                        testResults: 'vulkantest-results/**/*.xml',
+                        allowEmptyResults: true,
+                        keepLongStdio: true,
+                        skipPublishingChecks: true
+                    )
                 } finally {
                     retry(3) {
                         try {
@@ -420,6 +444,12 @@ def gfxrTestLinuxManual(
                         allowEmptyArchive: true,
                         onlyIfSuccessful: false
                     )
+                    junit(
+                        testResults: 'vulkantest-results/**/*.xml',
+                        allowEmptyResults: true,
+                        keepLongStdio: true,
+                        skipPublishingChecks: true
+                    )
                 } finally {
                     retry(3) {
                         try {
@@ -500,6 +530,12 @@ def gfxrTestAndroidManual(
                         excludes: '**/*.gfxr,**/core,**/core.*,**/*.jsonl,**/*.gfxa',
                         allowEmptyArchive: true,
                         onlyIfSuccessful: false
+                    )
+                    junit(
+                        testResults: 'vulkantest-results/**/*.xml',
+                        allowEmptyResults: true,
+                        keepLongStdio: true,
+                        skipPublishingChecks: true
                     )
                 } finally {
                     retry(3) {
