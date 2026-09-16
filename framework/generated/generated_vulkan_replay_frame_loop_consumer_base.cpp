@@ -98,6 +98,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyInstance(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.instance);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.instance);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDevice(
@@ -164,6 +166,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDevice(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.device);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.device);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkAllocateMemory(
@@ -323,6 +327,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyFence(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.fence);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.fence);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateSemaphore(
@@ -389,6 +395,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySemaphore(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.semaphore);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.semaphore);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateQueryPool(
@@ -455,6 +463,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyQueryPool(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.queryPool);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.queryPool);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateBuffer(
@@ -521,6 +531,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyBuffer(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.buffer);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.buffer);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateImage(
@@ -587,6 +599,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyImage(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.image);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.image);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateImageView(
@@ -653,6 +667,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyImageView(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.imageView);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.imageView);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyCommandPool(
@@ -695,6 +711,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyCommandPool(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.commandPool);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.commandPool);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkAllocateCommandBuffers(
@@ -787,6 +805,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyEvent(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.event);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.event);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateBufferView(
@@ -853,6 +873,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyBufferView(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.bufferView);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.bufferView);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateShaderModule(
@@ -919,6 +941,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyShaderModule(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.shaderModule);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.shaderModule);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreatePipelineCache(
@@ -985,6 +1009,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipelineCache(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.pipelineCache);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.pipelineCache);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkMergePipelineCaches(
@@ -1155,6 +1181,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipeline(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.pipeline);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.pipeline);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreatePipelineLayout(
@@ -1221,6 +1249,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipelineLayout(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.pipelineLayout);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.pipelineLayout);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateSampler(
@@ -1287,6 +1317,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySampler(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.sampler);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.sampler);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDescriptorSetLayout(
@@ -1353,6 +1385,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorSetLayout(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.descriptorSetLayout);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.descriptorSetLayout);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDescriptorPool(
@@ -1548,6 +1582,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyFramebuffer(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.framebuffer);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.framebuffer);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateRenderPass(
@@ -1614,6 +1650,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyRenderPass(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.renderPass);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.renderPass);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindBufferMemory2(
@@ -1706,6 +1744,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorUpdateTemplat
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.descriptorUpdateTemplate);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.descriptorUpdateTemplate);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateSamplerYcbcrConversion(
@@ -1772,6 +1812,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySamplerYcbcrConversion(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.ycbcrConversion);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.ycbcrConversion);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateRenderPass2(
@@ -1862,6 +1904,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPrivateDataSlot(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.privateDataSlot);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.privateDataSlot);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkMapMemory2(
@@ -1943,6 +1987,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySurfaceKHR(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.surface);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.surface);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateSwapchainKHR(
@@ -2009,6 +2055,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySwapchainKHR(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.swapchain);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.swapchain);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDisplayModeKHR(
@@ -2348,6 +2396,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyVideoSessionKHR(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.videoSession);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.videoSession);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindVideoSessionMemoryKHR(
@@ -2427,6 +2477,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyVideoSessionParametersK
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.videoSessionParameters);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.videoSessionParameters);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkImportSemaphoreFdKHR(
@@ -2506,6 +2558,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorUpdateTemplat
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.descriptorUpdateTemplate);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.descriptorUpdateTemplate);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateRenderPass2KHR(
@@ -2609,6 +2663,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySamplerYcbcrConversionK
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.ycbcrConversion);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.ycbcrConversion);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindBufferMemory2KHR(
@@ -2701,6 +2757,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDeferredOperationKHR(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.operation);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.operation);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkMapMemory2KHR(
@@ -2782,6 +2840,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipelineBinaryKHR(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.pipelineBinary);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.pipelineBinary);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkReleaseCapturedPipelineDataKHR(
@@ -2874,6 +2934,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDebugReportCallbackEXT(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.callback);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.callback);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateStreamDescriptorSurfaceGGP(
@@ -3075,6 +3137,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDebugUtilsMessengerEXT(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.messenger);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.messenger);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateValidationCacheEXT(
@@ -3141,6 +3205,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyValidationCacheEXT(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.validationCache);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.validationCache);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateAccelerationStructureNV(
@@ -3473,6 +3539,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyIndirectCommandsLayoutN
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.indirectCommandsLayout);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.indirectCommandsLayout);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreatePrivateDataSlotEXT(
@@ -3539,6 +3607,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPrivateDataSlotEXT(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.privateDataSlot);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.privateDataSlot);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDirectFBSurfaceEXT(
@@ -3653,6 +3723,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyMicromapEXT(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.micromap);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.micromap);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateTensorARM(
@@ -3719,6 +3791,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyTensorARM(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.tensor);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.tensor);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateTensorViewARM(
@@ -3785,6 +3859,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyTensorViewARM(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.tensorView);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.tensorView);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindTensorMemoryARM(
@@ -3864,6 +3940,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyOpticalFlowSessionNV(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.session);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.session);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindOpticalFlowSessionImageNV(
@@ -4024,6 +4102,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyShaderEXT(
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.shader);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.shader);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDataGraphPipelinesARM(
@@ -4208,6 +4288,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDataGraphPipelineSessio
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.session);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.session);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateIndirectCommandsLayoutEXT(
@@ -4274,6 +4356,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyIndirectCommandsLayoutE
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.indirectCommandsLayout);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.indirectCommandsLayout);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateIndirectExecutionSetEXT(
@@ -4340,6 +4424,8 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyIndirectExecutionSetEXT
         // If this resource binds to memory, remove it from bound memory set
         boundMemory.erase(args.indirectExecutionSet);
     }
+    // If this resource binds to memory, remove it from bound memory set
+    boundMemory.erase(args.indirectExecutionSet);
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateAccelerationStructureKHR(
