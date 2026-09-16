@@ -129,9 +129,21 @@
     "vkDestroyShaderEXT"
   ],
 
-  "resourceBindMemory": [
+  "resourceSingleBindMemory": [
     "vkBindBufferMemory",
     "vkBindImageMemory"
+  ],
+
+  "resourceMultipleBindMemory": [
+    "vkBindBufferMemory2",
+    "vkBindBufferMemory2KHR",
+    "vkBindImageMemory2",
+    "vkBindImageMemory2KHR",
+    "vkBindAccelerationStructureMemoryKHR",
+    "vkBindAccelerationStructureMemoryNV",
+    "vkBindDataGraphPipelineSessionMemoryARM",
+    "vkBindTensorMemoryARM",
+    "vkBindVideoSessionMemoryKHR"
   ],
 
   "comment" : "These resource allocation entry points are not yet fully",
@@ -141,16 +153,7 @@
   "resourceAllocateNotFullyImplemented":
   [
     "vkAllocateCommandBuffers",
-    "vkBindBufferMemory2",
-    "vkBindBufferMemory2KHR",
-    "vkBindImageMemory2",
-    "vkBindImageMemory2KHR",
-    "vkBindAccelerationStructureMemoryKHR",
-    "vkBindAccelerationStructureMemoryNV",
-    "vkBindDataGraphPipelineSessionMemoryARM",
     "vkBindOpticalFlowSessionImageNV",
-    "vkBindTensorMemoryARM",
-    "vkBindVideoSessionMemoryKHR",
     "vkCreatePipelineBinariesKHR",
     "vkCreateSharedSwapchainsKHR",
     "vkImportFenceFdKHR",

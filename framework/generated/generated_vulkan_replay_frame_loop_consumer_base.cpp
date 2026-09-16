@@ -89,7 +89,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyInstance(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyInstance(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.instance);
 }
 
@@ -148,7 +148,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDevice(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDevice(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.device);
 }
 
@@ -207,7 +207,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkFreeMemory(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkFreeMemory(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.memory);
 }
 
@@ -335,7 +335,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyFence(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyFence(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.fence);
 }
 
@@ -394,7 +394,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySemaphore(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroySemaphore(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.semaphore);
 }
 
@@ -453,7 +453,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyQueryPool(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyQueryPool(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.queryPool);
 }
 
@@ -512,7 +512,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyBuffer(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyBuffer(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.buffer);
 }
 
@@ -571,7 +571,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyImage(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyImage(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.image);
 }
 
@@ -630,7 +630,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyImageView(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyImageView(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.imageView);
 }
 
@@ -665,7 +665,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyCommandPool(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyCommandPool(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.commandPool);
 }
 
@@ -750,7 +750,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyEvent(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyEvent(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.event);
 }
 
@@ -809,7 +809,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyBufferView(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyBufferView(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.bufferView);
 }
 
@@ -868,7 +868,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyShaderModule(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyShaderModule(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.shaderModule);
 }
 
@@ -927,7 +927,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipelineCache(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyPipelineCache(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.pipelineCache);
 }
 
@@ -1090,7 +1090,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipeline(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyPipeline(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.pipeline);
 }
 
@@ -1149,7 +1149,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipelineLayout(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyPipelineLayout(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.pipelineLayout);
 }
 
@@ -1208,7 +1208,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySampler(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroySampler(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.sampler);
 }
 
@@ -1267,7 +1267,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorSetLayout(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDescriptorSetLayout(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.descriptorSetLayout);
 }
 
@@ -1455,7 +1455,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyFramebuffer(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyFramebuffer(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.framebuffer);
 }
 
@@ -1514,7 +1514,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyRenderPass(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyRenderPass(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.renderPass);
 }
 
@@ -1522,26 +1522,76 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkBindBufferMemory2(
     const ApiCallInfo&                          call_info,
     args::BindBufferMemory2&                    args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindBufferMemory2(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindBufferMemory2(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindBufferMemoryInfo* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindBufferMemoryInfo> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindImageMemory2(
     const ApiCallInfo&                          call_info,
     args::BindImageMemory2&                     args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindImageMemory2(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindImageMemory2(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindImageMemoryInfo* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindImageMemoryInfo> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDescriptorUpdateTemplate(
@@ -1599,7 +1649,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorUpdateTemplat
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDescriptorUpdateTemplate(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.descriptorUpdateTemplate);
 }
 
@@ -1658,7 +1708,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySamplerYcbcrConversion(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroySamplerYcbcrConversion(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.ycbcrConversion);
 }
 
@@ -1741,7 +1791,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPrivateDataSlot(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyPrivateDataSlot(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.privateDataSlot);
 }
 
@@ -1815,7 +1865,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySurfaceKHR(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroySurfaceKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.surface);
 }
 
@@ -1874,7 +1924,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySwapchainKHR(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroySwapchainKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.swapchain);
 }
 
@@ -2206,7 +2256,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyVideoSessionKHR(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyVideoSessionKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.videoSession);
 }
 
@@ -2214,13 +2264,38 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkBindVideoSessionMemoryKHR(
     const ApiCallInfo&                          call_info,
     args::BindVideoSessionMemoryKHR&            args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindVideoSessionMemoryKHR(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindVideoSessionMemoryKHR(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindVideoSessionMemoryInfoKHR* meta_ptr = args.pBindSessionMemoryInfos.GetMetaStructPointer();
+        std::vector<VkBindVideoSessionMemoryInfoKHR> filtered_binds;
+        for (int i = 0; i < args.bindSessionMemoryInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.videoSession))
+            {
+                format::HandleId old_memory = boundMemory[args.videoSession];
+                need_bind = old_memory != args.bindSessionMemoryInfoCount;
+                boundMemory.erase(args.videoSession);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateVideoSessionParametersKHR(
@@ -2278,7 +2353,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyVideoSessionParametersK
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyVideoSessionParametersKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.videoSessionParameters);
 }
 
@@ -2350,7 +2425,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDescriptorUpdateTemplat
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDescriptorUpdateTemplateKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.descriptorUpdateTemplate);
 }
 
@@ -2446,7 +2521,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroySamplerYcbcrConversionK
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroySamplerYcbcrConversionKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.ycbcrConversion);
 }
 
@@ -2454,26 +2529,76 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkBindBufferMemory2KHR(
     const ApiCallInfo&                          call_info,
     args::BindBufferMemory2KHR&                 args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindBufferMemory2KHR(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindBufferMemory2KHR(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindBufferMemoryInfo* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindBufferMemoryInfo> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkBindImageMemory2KHR(
     const ApiCallInfo&                          call_info,
     args::BindImageMemory2KHR&                  args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindImageMemory2KHR(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindImageMemory2KHR(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindImageMemoryInfo* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindImageMemoryInfo> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateDeferredOperationKHR(
@@ -2531,7 +2656,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDeferredOperationKHR(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDeferredOperationKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.operation);
 }
 
@@ -2605,7 +2730,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPipelineBinaryKHR(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyPipelineBinaryKHR(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.pipelineBinary);
 }
 
@@ -2690,7 +2815,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDebugReportCallbackEXT(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDebugReportCallbackEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.callback);
 }
 
@@ -2884,7 +3009,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDebugUtilsMessengerEXT(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDebugUtilsMessengerEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.messenger);
 }
 
@@ -2943,7 +3068,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyValidationCacheEXT(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyValidationCacheEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.validationCache);
 }
 
@@ -2988,13 +3113,38 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkBindAccelerationStructureMemor
     const ApiCallInfo&                          call_info,
     args::BindAccelerationStructureMemoryNV&    args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindAccelerationStructureMemoryNV(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindAccelerationStructureMemoryNV(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindAccelerationStructureMemoryInfoNV* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindAccelerationStructureMemoryInfoNV> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateRayTracingPipelinesNV(
@@ -3268,7 +3418,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyIndirectCommandsLayoutN
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyIndirectCommandsLayoutNV(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.indirectCommandsLayout);
 }
 
@@ -3327,7 +3477,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyPrivateDataSlotEXT(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyPrivateDataSlotEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.privateDataSlot);
 }
 
@@ -3434,7 +3584,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyMicromapEXT(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyMicromapEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.micromap);
 }
 
@@ -3493,7 +3643,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyTensorARM(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyTensorARM(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.tensor);
 }
 
@@ -3552,7 +3702,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyTensorViewARM(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyTensorViewARM(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.tensorView);
 }
 
@@ -3560,13 +3710,38 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkBindTensorMemoryARM(
     const ApiCallInfo&                          call_info,
     args::BindTensorMemoryARM&                  args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindTensorMemoryARM(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindTensorMemoryARM(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindTensorMemoryInfoARM* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindTensorMemoryInfoARM> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkCreateOpticalFlowSessionNV(
@@ -3624,7 +3799,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyOpticalFlowSessionNV(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyOpticalFlowSessionNV(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.session);
 }
 
@@ -3777,7 +3952,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyShaderEXT(
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyShaderEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.shader);
 }
 
@@ -3914,13 +4089,38 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkBindDataGraphPipelineSessionMe
     const ApiCallInfo&                          call_info,
     args::BindDataGraphPipelineSessionMemoryARM& args)
 {
-    // Not fully implemented yet.
-    // Return if not the first time through loop
-    if (getFrameLoopInfo().IsRepetition())
+    if (!getFrameLoopInfo().IsLooping())
     {
-        return;
+        // Pass through if not looping
+        VulkanReplayConsumer::Process_vkBindDataGraphPipelineSessionMemoryARM(call_info, args);
     }
-    VulkanReplayConsumer::Process_vkBindDataGraphPipelineSessionMemoryARM(call_info, args);
+    else
+    {
+        // blahhhh
+        const Decoded_VkBindDataGraphPipelineSessionMemoryInfoARM* meta_ptr = args.pBindInfos.GetMetaStructPointer();
+        std::vector<VkBindDataGraphPipelineSessionMemoryInfoARM> filtered_binds;
+        for (int i = 0; i < args.bindInfoCount; ++i)
+        {
+            // We need to bind the memory if the object hasn't been bound
+            // or if it's being bound to a different memory
+            bool need_bind = false;
+            if (boundMemory.contains(meta_ptr->args.device))
+            {
+                format::HandleId old_memory = boundMemory[args.device];
+                need_bind = old_memory != args.bindInfoCount;
+                boundMemory.erase(args.device);
+            }
+            else
+            {
+                need_bind = true;
+            }
+
+            if (need_bind)
+            {
+            }
+        }
+
+    }
 }
 
 void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDataGraphPipelineSessionARM(
@@ -3954,7 +4154,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyDataGraphPipelineSessio
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyDataGraphPipelineSessionARM(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.session);
 }
 
@@ -4013,7 +4213,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyIndirectCommandsLayoutE
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyIndirectCommandsLayoutEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.indirectCommandsLayout);
 }
 
@@ -4072,7 +4272,7 @@ void VulkanReplayFrameLoopConsumerBase::Process_vkDestroyIndirectExecutionSetEXT
         // Since it might still be in use during the loop range, ONLY free it in the last iteration.
         VulkanReplayConsumer::Process_vkDestroyIndirectExecutionSetEXT(call_info, args);
     }
-    // If this resource binds to memory, remove it from bound memory set
+    // If this resource binds to memory, remove it from bound memory map
     boundMemory.erase(args.indirectExecutionSet);
 }
 
